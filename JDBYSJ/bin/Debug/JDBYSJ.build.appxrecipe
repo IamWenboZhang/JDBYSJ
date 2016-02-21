@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-2ITECBR</Machine>
+    <WindowsUser>Mr.Owl</WindowsUser>
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+    <TargetOsVersion>6.3</TargetOsVersion>
+    <TargetOsDescription>Windows Phone 8.1</TargetOsDescription>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>65073fdf-630e-4f95-885d-14da0f4f6239</PackageIdentityName>
+    <IntermediateOutputPath>H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\obj\Debug\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\JDBYSJ.exe">
+      <PackagePath>JDBYSJ.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Logo.scale-240.png">
+      <PackagePath>Assets\Logo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\SmallLogo.scale-240.png">
+      <PackagePath>Assets\SmallLogo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\SplashScreen.scale-240.png">
+      <PackagePath>Assets\SplashScreen.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Square71x71Logo.scale-240.png">
+      <PackagePath>Assets\Square71x71Logo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\StoreLogo.scale-240.png">
+      <PackagePath>Assets\StoreLogo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\WideLogo.scale-240.png">
+      <PackagePath>Assets\WideLogo.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Common\ReadMe.txt">
+      <PackagePath>Common\ReadMe.txt</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\DataModel\SampleData.json">
+      <PackagePath>DataModel\SampleData.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\JDBYSJ.xr.xml">
+      <PackagePath>JDBYSJ.xr.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\ItemPage.xbf">
+      <PackagePath>ItemPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\PivotPage.xbf">
+      <PackagePath>PivotPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\SearchPage.xbf">
+      <PackagePath>SearchPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
