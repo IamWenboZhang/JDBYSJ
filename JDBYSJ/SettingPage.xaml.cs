@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
+using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -17,26 +17,26 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// “透视应用程序”模板在 http://go.microsoft.com/fwlink/?LinkID=391641 上有介绍
+// “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
 
 namespace JDBYSJ
 {
     /// <summary>
-    /// 显示组内某一项的详细信息的页面。
+    /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ItemPage : Page
+    public sealed partial class SettingPage : Page
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public ItemPage()
+        public SettingPage()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-        } 
+        }
 
         /// <summary>
         /// 获取与此 <see cref="Page"/> 关联的 <see cref="NavigationHelper"/>。
@@ -69,18 +69,17 @@ namespace JDBYSJ
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: 创建适用于问题域的合适数据模型以替换示例数据。
-            //var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
-            //this.DefaultViewModel["Item"] = item;
-            string title = "";
-            string type = "";
-            GetNidAndType((string)e.NavigationParameter, ref title, ref type);
-            var item = await NewsDataSource.GetItemAsync(title, type);
-            this.DefaultViewModel["Item"] = item;
-            if(item.html != null)
+            if (App.HaveNetWork)
             {
-                this.DisplayWebView.NavigateToString(AddCssToHtmlStr(item.html));
+                var newschannel = await NewsChannelsDataSource.RefreshNewsChannels();
+                this.defaultViewModel["Channel"] = newschannel;
+                this.comboBox_Channel.ItemsSource = newschannel.channelList;
             }
-
+            else
+            {
+                MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
+                errormsgdlg.ShowAsync();
+            }
         }
 
         /// <summary>
@@ -123,20 +122,28 @@ namespace JDBYSJ
 
         #endregion
 
-        public void GetNidAndType(string str,ref string nid,ref string type)
-        {            
-            string[] temp = new string[2];
-            temp = str.Split(new char[] { '@' });
-            nid = temp[0];
-            type = temp[1];
-        }
-
-        private string AddCssToHtmlStr(string html)
+        private void comboBox_Channel_DropDownClosed(object sender, object e)
         {
-            string resultStr = "<html><body style=\"color:white\">" + html + " </body></html>";
-            return resultStr;
+            if (App.HaveNetWork)
+            {
+                if (this.comboBox_Channel.SelectedItem != null)
+                {
+                    NewsChannel selectChannel = this.comboBox_Channel.SelectedItem as NewsChannel;
+                    App.SelfChannelID = selectChannel.channelId;
+                    ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;//存储单一配置的句柄
+                                                                                                   //ApplicationDataCompositeValue composite = new ApplicationDataCompositeValue();//存储多项配置句柄
+                                                                                                   //StorageFolder localFolder = ApplicationData.Current.LocalFolder;//存储文件句柄
+                    localSettings.Values["SelfChannelID"] = selectChannel.channelId; ;//存储单一配置
+                                                                                      //composite["intVal"] = 1;
+                                                                                      //composite["strVal"] = "string";
+                                                                                      //localSettings.Values["exampleCompositeSetting"] = composite;//存储多项配置
+                }
+            }
+            else
+            {
+                MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
+                errormsgdlg.ShowAsync();
+            }
         }
-
-
     }
 }

@@ -1,12 +1,15 @@
 ﻿using JDBYSJ.Common;
+using JDBYSJ.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -67,8 +70,8 @@ namespace JDBYSJ
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: 创建适用于问题域的合适数据模型以替换示例数据。
-            //var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
-            //this.DefaultViewModel["Item"] = item;
+            var searchNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Search);
+            this.defaultViewModel["SearchResult"] = searchNews;
         }
 
         /// <summary>
@@ -114,7 +117,50 @@ namespace JDBYSJ
 
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            // 获取用户单击的项目以及所处的pivot传给ItemPage
+            string itemLink = ((NewsItem)e.ClickedItem).link;
+            string itemLinkAndType = itemLink + "@-1" ;
+            if (!Frame.Navigate(typeof(ItemPage), itemLinkAndType))
+            {
+                throw new Exception();
+            }
+        }
 
+        private async void Btn_Search_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.HaveNetWork)
+            {
+                var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                try
+                {
+                    await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        this.Panel_Search.Opacity = 1;
+                        this.ProgressRing_Search.IsActive = true;
+                    });
+                    var searchNews = await NewsDataSource.SearchNews(this.TextBox_Search.Text.Trim());
+                    if (searchNews.showapi_res_body.pagebean.allNum == "0")
+                    {
+                        MessageDialog none_msgdlg = new MessageDialog("未搜索到相关消息", "换个词试试吧~");
+                        none_msgdlg.ShowAsync();
+                    }
+                    this.defaultViewModel["SearchResult"] = searchNews;
+                }
+                catch (Exception ex)
+                {
+
+                }
+                await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    this.Panel_Search.Opacity = 0;
+                    this.ProgressRing_Search.IsActive = false;
+                });
+            }
+            else
+            {
+                MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
+                errormsgdlg.ShowAsync();
+            }
         }
     }
 }

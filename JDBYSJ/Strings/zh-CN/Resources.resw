@@ -121,7 +121,7 @@
     <value>添加</value>
   </data>
   <data name="Header.Text" xml:space="preserve">
-    <value>我的应用程序</value>
+    <value>金丹毕业设计</value>
   </data>
   <data name="NavigationFailedExceptionMessage" xml:space="preserve">
     <value>导航失败。</value>

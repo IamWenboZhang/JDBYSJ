@@ -7,10 +7,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,12 +27,15 @@ namespace JDBYSJ
 {
     public sealed partial class PivotPage : Page
     {
-        //private const string FirstGroupName = "FirstGroup";
-        //private const string SecondGroupName = "SecondGroup";
         private const string SocialNewsName = "Social";
         private const string TechnologyNewsName = "Technology";
         private const string YuleNewsName = "Yule";
         private const string SelfNewsName = "Self";
+
+        private int SocialCurrentPage = 0;
+        private int YuleCurrentPage = 0;
+        private int TechnologyCurrentPage = 0;
+        private int SelfCurrentPage = 0;
 
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -75,16 +80,82 @@ namespace JDBYSJ
         /// <see cref="Frame.Navigate(Type, Object)"/> 的导航参数，又提供
         /// 此页在以前会话期间保留的状态的
         /// 的字典。首次访问页面时，该状态将为 null。</param>
+        /// 
+        /// 社会新闻项加载数据
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: 创建适用于问题域的合适数据模型以替换示例数据
-            //var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-1");
-            //this.DefaultViewModel[FirstGroupName] = sampleDataGroup;
+            if (App.HaveNetWork)
+            {
+                if (App.IsFirstLoadPivotPage)
+                {
+                    var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                    await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        this.Panel_Load.Opacity = 1;
+                        this.ProgressRing_Load.IsActive = true;
+                    });
+                    var socialNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Social);
+                    this.defaultViewModel[SocialNewsName] = socialNews;
+                    SocialCurrentPage = Convert.ToInt32(socialNews.showapi_res_body.pagebean.currentPage);
+                }
+            }
+        }
 
-            ShowAPIURL socialNewsAPIUrl = new ShowAPIURL(App.SoicalChannelID, "", "", "1", "", "1");
-            string socialApiUrl = socialNewsAPIUrl.ToString();
-            var socialNews = await NewsDataSource.GetShowAPI_NewsClassAsync(socialApiUrl);
-            this.defaultViewModel[SocialNewsName] = socialNews;
+        /// <summary>
+        /// 滚动到视图中后，为第二个数据透视项加载内容。
+        /// 娱乐新闻项加载数据
+        /// </summary>
+        private async void YulePivot_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (App.HaveNetWork)
+            {
+                if (App.IsFirstLoadPivotPage)
+                {
+                    var yuleNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Yule);
+                    this.defaultViewModel[YuleNewsName] = yuleNews;
+                    YuleCurrentPage = Convert.ToInt32(yuleNews.showapi_res_body.pagebean.currentPage);
+                }
+            }
+        }
+
+        //科技新闻项加载数据
+        private async void PivotItemTech_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (App.HaveNetWork)
+            {
+                if (App.IsFirstLoadPivotPage)
+                {
+                    var technologyNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Technology);
+                    this.defaultViewModel[TechnologyNewsName] = technologyNews;
+                    TechnologyCurrentPage = Convert.ToInt32(technologyNews.showapi_res_body.pagebean.currentPage);
+                }
+            }
+        }
+
+        //私人订阅新闻项加载数据
+        private async void PivotItemSelf_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (App.HaveNetWork)
+            {
+                if (App.IsFirstLoadPivotPage)
+                {
+                    if (App.SelfChannelID.Length != 0)
+                    {
+                        var selfNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Self);
+                        this.defaultViewModel[SelfNewsName] = selfNews;
+                        SelfCurrentPage = Convert.ToInt32(selfNews.showapi_res_body.pagebean.currentPage);
+                        this.RefreshListView.FontSize = 20;
+                    }
+                    var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                    await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        this.Panel_Load.Opacity = 0;
+                        this.ProgressRing_Load.IsActive = false;
+                    });
+                    App.IsFirstLoadPivotPage = false;
+                }
+            }
         }
 
         /// <summary>
@@ -131,22 +202,17 @@ namespace JDBYSJ
         {
             // 导航至相应的目标页，并
             // 通过将所需信息作为导航参数传入来配置新页
-            var itemNid = ((NewsItem)e.ClickedItem).nid;
-            if (!Frame.Navigate(typeof(ItemPage), itemNid))
+
+            // 获取用户单击的项目以及所处的pivot传给ItemPage
+            string itemLink = ((NewsItem)e.ClickedItem).link;
+            string itemLinkAndType = itemLink + "@" + this.pivot.SelectedIndex.ToString();
+            if (!Frame.Navigate(typeof(ItemPage), itemLinkAndType))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
         }
 
-        /// <summary>
-        /// 滚动到视图中后，为第二个数据透视项加载内容。
-        /// </summary>
-        private async void SecondPivot_Loaded(object sender, RoutedEventArgs e)
-        {
-            //var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-2");
-            //this.DefaultViewModel[SecondGroupName] = sampleDataGroup;
-
-        }
+      
 
         #region NavigationHelper 注册
 
@@ -175,10 +241,114 @@ namespace JDBYSJ
 
         #endregion
 
-
+        //搜索按钮的单击事件
         private void SearchAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             if (!Frame.Navigate(typeof(SearchPage)))
+            {
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
+
+        private async void RefreshAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch(this.pivot.SelectedIndex)
+            {
+                case 0:
+                    var socialNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Social);
+                    this.defaultViewModel[SocialNewsName] = socialNews;
+                    SocialCurrentPage = Convert.ToInt32(socialNews.showapi_res_body.pagebean.currentPage);
+                    break;
+                case 1:
+                    var yuleNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Yule);
+                    this.defaultViewModel[YuleNewsName] = yuleNews;
+                    YuleCurrentPage = Convert.ToInt32(yuleNews.showapi_res_body.pagebean.currentPage);
+                    break;
+                case 2:
+                    var technologyNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Technology);
+                    this.defaultViewModel[TechnologyNewsName] = technologyNews;
+                    TechnologyCurrentPage = Convert.ToInt32(technologyNews.showapi_res_body.pagebean.currentPage);
+                    break;
+                case 3:
+                    if (App.SelfChannelID.Length != 0)
+                    {
+                        var selfNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Self);
+                        this.defaultViewModel[SelfNewsName] = selfNews;
+                        SelfCurrentPage = Convert.ToInt32(selfNews.showapi_res_body.pagebean.currentPage);
+                    }
+                    break;
+            }
+        }
+
+        private async void AddAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.HaveNetWork)
+            {
+                switch (this.pivot.SelectedIndex)
+                {
+                    case 0:
+                        ShowAPI_NewsClass socialNews = this.defaultViewModel[SocialNewsName] as ShowAPI_NewsClass;
+                        var addSocialNews = await NewsDataSource.GetNextPage(socialNews, NewsChannelsType.Social, SocialCurrentPage);
+                        if (addSocialNews.showapi_res_body.pagebean.currentPage != "-1")
+                        {
+                            SocialCurrentPage = Convert.ToInt32(addSocialNews.showapi_res_body.pagebean.currentPage);
+                            for (int i = 0; i < addSocialNews.showapi_res_body.pagebean.contentlist.Count; i++)
+                            {
+                                socialNews.showapi_res_body.pagebean.contentlist.Add(addSocialNews.showapi_res_body.pagebean.contentlist[i]);
+                            }
+                        }
+                        break;
+                    case 1:
+                        ShowAPI_NewsClass yuleNews = this.defaultViewModel[YuleNewsName] as ShowAPI_NewsClass;
+                        var addYuleNews = await NewsDataSource.GetNextPage(yuleNews, NewsChannelsType.Yule, YuleCurrentPage);
+                        if(addYuleNews.showapi_res_body.pagebean.currentPage != "-1")
+                        {
+                            YuleCurrentPage = Convert.ToInt32(addYuleNews.showapi_res_body.pagebean.currentPage);
+                            for (int i = 0; i < addYuleNews.showapi_res_body.pagebean.contentlist.Count; i++)
+                            {
+                                yuleNews.showapi_res_body.pagebean.contentlist.Add(addYuleNews.showapi_res_body.pagebean.contentlist[i]);
+                            }
+                        }
+                        break;
+                    case 2:
+                        ShowAPI_NewsClass techNews = this.defaultViewModel[TechnologyNewsName] as ShowAPI_NewsClass;
+                        var addTechNews = await NewsDataSource.GetNextPage(techNews, NewsChannelsType.Technology, TechnologyCurrentPage);
+                        if(addTechNews.showapi_res_body.pagebean.currentPage != "-1")
+                        {
+                            TechnologyCurrentPage = Convert.ToInt32(addTechNews.showapi_res_body.pagebean.currentPage);
+                            for (int i = 0; i < addTechNews.showapi_res_body.pagebean.contentlist.Count; i++)
+                            {
+                                techNews.showapi_res_body.pagebean.contentlist.Add(addTechNews.showapi_res_body.pagebean.contentlist[i]);
+                            }
+                        }
+                        break;
+                    case 3:
+                        if (App.SelfChannelID.Length != 0)
+                        {
+                            ShowAPI_NewsClass selfNews = this.defaultViewModel[SelfNewsName] as ShowAPI_NewsClass;
+                            var addSelfNews = await NewsDataSource.GetNextPage(selfNews, NewsChannelsType.Self, SelfCurrentPage);
+                            if (addSelfNews.showapi_res_body.pagebean.currentPage != "-1")
+                            {
+                                SelfCurrentPage = Convert.ToInt32(addSelfNews.showapi_res_body.pagebean.currentPage);
+                                for (int i = 0; i < addSelfNews.showapi_res_body.pagebean.contentlist.Count; i++)
+                                {
+                                    selfNews.showapi_res_body.pagebean.contentlist.Add(addSelfNews.showapi_res_body.pagebean.contentlist[i]);
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
+                errormsgdlg.ShowAsync();
+            }
+        }
+
+        private void SettingAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(SettingPage)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }

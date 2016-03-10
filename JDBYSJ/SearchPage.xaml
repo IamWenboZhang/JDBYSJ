@@ -5,20 +5,25 @@
     xmlns:local="using:JDBYSJ"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:JDBYSJ.Data"
     mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid
+        DataContext="{Binding SearchResult}"
+        d:DataContext="{Binding SearchNewsPages, Source={d:DesignData Source=/DataModel/TestData.json, Type=data:ShowAPI_NewsClass}}"
+        >
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="17*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel x:Name="SearchPanel" Grid.Row="0" Margin="0,0,0,0" Orientation="Horizontal">
-            <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="10,28,0,27.833" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" Width="280"  PlaceholderText="搜索"/>
-            <HyperlinkButton x:Name="Btn_Search" Margin="15,28,10,28" Content="搜  索" FontSize="26.667" Foreground="#FF17A3D8"/>
-        </StackPanel>
+        <Grid x:Name="SearchPanel" Grid.Row="0" Margin="0,0,0,0" >
+            <TextBox x:Name="TextBox_Search" Margin="10,28,100,28" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch"   PlaceholderText="你想搜索与什么相关的"/>
+            <HyperlinkButton x:Name="Btn_Search" Content="搜 索" HorizontalAlignment="Right" FontSize="24" Margin="0,28,20,28" VerticalAlignment="Stretch" Click="Btn_Search_Click" Foreground="#FF0B6CF8"/>
+        </Grid>
         <ListView
-            ItemsSource="{Binding Items}"
+            ItemsSource="{Binding showapi_res_body.pagebean.contentlist}"
             IsItemClickEnabled="True"
             ItemClick="ItemView_ItemClick"
             Margin="0,0,0,0"
@@ -28,20 +33,24 @@
                 <DataTemplate>
                     <Grid Margin="0,0,0,9.5" Height="157">
                         <Image 
-                                    Source="{Binding ImagePath}"
-                                    Margin="10,10,0,9"  
+                                    Source="{Binding imageurls[0].url}"
+                                    Margin="10,50,0,9"  
                                     HorizontalAlignment="Left" 
-                                    Width="125"
-                                    Height="125"/>
+                                    Width="100"
+                                    Height="100" 
+                                    Stretch="UniformToFill"/>
                         <TextBlock
-                                    Text="{Binding Title}"
+                                    Text="{Binding title}"
                                     TextWrapping="Wrap"
+                                    TextTrimming="WordEllipsis"
+                                    FontSize="25"
+                                    FontWeight="Bold"
                                     Pivot.SlideInAnimationGroup="1"
                                     CommonNavigationTransitionInfo.IsStaggerElement="True"
                                     Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="145,0,10,110"/>
+                                    Margin="10,0,10,110"/>
                         <TextBlock
-                                    Text="{Binding Description}"
+                                    Text="{Binding desc}"
                                     TextWrapping="WrapWholeWords"
                                     Pivot.SlideInAnimationGroup="2" 
                                     CommonNavigationTransitionInfo.IsStaggerElement="True" 
@@ -52,6 +61,9 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
+        <StackPanel x:Name="Panel_Search" Margin="100,180,100,230" Opacity="0" Grid.Row="1">
+            <ProgressRing x:Name="ProgressRing_Search" Margin="70,10,70,0" Background="{x:Null}"/>
+            <TextBlock x:Name="TextBlock_Search" Text="正在加载..." Margin="70,10,70,0" TextAlignment="Center" SelectionHighlightColor="{x:Null}" />
+        </StackPanel>
     </Grid>
 </Page>

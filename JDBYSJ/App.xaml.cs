@@ -1,4 +1,5 @@
 ﻿using JDBYSJ.Common;
+using JDBYSJ.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -21,6 +23,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace JDBYSJ
 {
+    public enum NewsChannelsType { Social, Yule, Technology, Self,Search };
     /// <summary>
     /// 提供特定于应用程序的行为，以补充默认的应用程序类。
     /// </summary>
@@ -29,7 +32,10 @@ namespace JDBYSJ
         public static string SoicalChannelID = "5572a10bb3cdc86cf39001f8";              //“社会最新”频道ID
         public static string TechnologyChannelID = "5572a10ab3cdc86cf39001f4";          //“科技最新”频道ID
         public static string YuleChannelID = "5572a108b3cdc86cf39001d5";                //“娱乐焦点”频道ID
-        public static string SelfChannelID = "";                                        //“私人订阅”频道ID
+        public static string SelfChannelID = "";                                        //“私人订阅”频道ID        
+
+        public static bool IsFirstLoadPivotPage = true;                                       //判断是否是第一次进入PivotPage界面
+        public static bool HaveNetWork { get { return MrOwl_JasonSerializerClass.CheckNetWork(); } }
 
         private TransitionCollection transitions;
 
@@ -109,6 +115,14 @@ namespace JDBYSJ
                 rootFrame.ContentTransitions = null;
                 rootFrame.Navigated += this.RootFrame_FirstNavigated;
 
+
+
+                ApplicationData_MrOwl.ReadLocalSetting();
+                if(!HaveNetWork)
+                {
+                    MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
+                    errormsgdlg.ShowAsync();
+                }
                 // 当导航堆栈尚未还原时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置
                 // 新页面。
