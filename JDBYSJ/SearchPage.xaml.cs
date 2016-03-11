@@ -30,6 +30,9 @@ namespace JDBYSJ
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
 
+        private int SearchCurrentPage = 0;
+        public static string MainWord = "";
+
         public SearchPage()
         {
             this.InitializeComponent();
@@ -135,23 +138,33 @@ namespace JDBYSJ
                 {
                     await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
+                        this.StackPanel_Result.Opacity = 0;
                         this.Panel_Search.Opacity = 1;
                         this.ProgressRing_Search.IsActive = true;
                     });
-                    var searchNews = await NewsDataSource.SearchNews(this.TextBox_Search.Text.Trim());
+                    MainWord = this.TextBox_Search.Text.Trim();
+                    var searchNews = await NewsDataSource.SearchNews(MainWord);
+                    SearchCurrentPage = Convert.ToInt32(searchNews.showapi_res_body.pagebean.currentPage);
                     if (searchNews.showapi_res_body.pagebean.allNum == "0")
                     {
                         MessageDialog none_msgdlg = new MessageDialog("未搜索到相关消息", "换个词试试吧~");
                         none_msgdlg.ShowAsync();
                     }
+                    else
+                    {
+                        await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            this.TextBlock_ResultNumber.Text = searchNews.showapi_res_body.pagebean.allNum;
+                            this.StackPanel_Result.Opacity = 1;                                                     
+                        });
+                    }
                     this.defaultViewModel["SearchResult"] = searchNews;
                 }
                 catch (Exception ex)
-                {
-
+                {                    
                 }
                 await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
+                {                    
                     this.Panel_Search.Opacity = 0;
                     this.ProgressRing_Search.IsActive = false;
                 });
@@ -160,6 +173,33 @@ namespace JDBYSJ
             {
                 MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
                 errormsgdlg.ShowAsync();
+            }
+        }
+
+        private async void btn_Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            var searchNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Search);
+            this.defaultViewModel["SearchResult"] = searchNews;
+            SearchCurrentPage = Convert.ToInt32(searchNews.showapi_res_body.pagebean.currentPage);
+            var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                this.TextBlock_ResultNumber.Text = searchNews.showapi_res_body.pagebean.allNum;
+                this.StackPanel_Result.Opacity = 1;
+            });
+        }
+
+        private async void btn_Add_Click(object sender, RoutedEventArgs e)
+        {
+            ShowAPI_NewsClass searchNews = this.defaultViewModel["SearchResult"] as ShowAPI_NewsClass;
+            var addSearchNews = await NewsDataSource.GetNextPage(searchNews, NewsChannelsType.Search, SearchCurrentPage);
+            if (addSearchNews.showapi_res_body.pagebean.currentPage != "-1")
+            {
+                SearchCurrentPage = Convert.ToInt32(addSearchNews.showapi_res_body.pagebean.currentPage);
+                for (int i = 0; i < addSearchNews.showapi_res_body.pagebean.contentlist.Count; i++)
+                {
+                    searchNews.showapi_res_body.pagebean.contentlist.Add(addSearchNews.showapi_res_body.pagebean.contentlist[i]);
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -133,7 +134,18 @@ namespace JDBYSJ
 
         private string AddCssToHtmlStr(string html)
         {
-            string resultStr = "<html><body style=\"color:white\">" + html + " </body></html>";
+            string resultStr = "";
+            SolidColorBrush pageBackGround = this.Background as SolidColorBrush;            
+            if(pageBackGround.Color == Color.FromArgb(255, 255, 255, 255))
+            {
+                resultStr = "<html><body style=\"color:black\">" + html + " </body></html>";
+                //resultStr = "<html><body style=\"color:white\">" + html + " </body></html>";
+            }
+            if(pageBackGround.Color == Color.FromArgb(255, 0, 0, 0))
+            {
+                resultStr = "<html><body style=\"color:white\">" + html + " </body></html>";
+                //resultStr = "<html><body style=\"color:black\">" + html + " </body></html>";
+            }
             return resultStr;
         }
 

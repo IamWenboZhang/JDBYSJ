@@ -137,11 +137,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\default1.jpg" />
-    <Content Include="Assets\default2.jpg" />
-    <Content Include="Assets\default3.jpg" />
-    <Content Include="Assets\default.4.jpg" />
-    <Content Include="Assets\default0.jpg" />
+    <Content Include="Assets\chatuzhuanshu.png" />
     <Content Include="Assets\Logo.scale-100.png" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

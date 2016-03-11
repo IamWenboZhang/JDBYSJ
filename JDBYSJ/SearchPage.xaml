@@ -29,6 +29,13 @@
             Margin="0,0,0,0"
             Grid.Row="1"
             ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+            <ListView.Header>
+                <StackPanel x:Name="StackPanel_Result" Orientation="Horizontal" Opacity="0">
+                    <TextBlock Text="搜索到" FontSize="15" Margin="10,0,0,0"/>
+                    <TextBlock x:Name="TextBlock_ResultNumber" FontSize="15"  Foreground="#FF0B6CF8"/>
+                    <TextBlock Text="个结果" FontSize="15" />
+                </StackPanel>
+            </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,0,0,9.5" Height="157">
@@ -61,9 +68,15 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel x:Name="Panel_Search" Margin="100,180,100,230" Opacity="0" Grid.Row="1">
+        <StackPanel x:Name="Panel_Search" Margin="100,180,100,180" Opacity="0" Grid.Row="1">
             <ProgressRing x:Name="ProgressRing_Search" Margin="70,10,70,0" Background="{x:Null}"/>
             <TextBlock x:Name="TextBlock_Search" Text="正在加载..." Margin="70,10,70,0" TextAlignment="Center" SelectionHighlightColor="{x:Null}" />
         </StackPanel>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="btn_Refresh" Icon="Refresh" Label="刷新列表" Click="btn_Refresh_Click" />
+            <AppBarButton x:Name="btn_Load" Icon="Add" Label="加载更多" Click="btn_Add_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

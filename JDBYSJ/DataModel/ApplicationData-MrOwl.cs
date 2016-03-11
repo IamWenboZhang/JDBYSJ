@@ -9,7 +9,7 @@ namespace JDBYSJ.Data
 {
     class ApplicationData_MrOwl
     {
-        public static void ReadLocalSetting()
+        public async static void ReadLocalSetting()
         {
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;//存储单一配置的句柄
 
@@ -17,6 +17,7 @@ namespace JDBYSJ.Data
             if(value != null)
             {
                 App.SelfChannelID = value as String;
+                App.SelfChannelName = await NewsChannelsDataSource.GetChannelNameByChannelId(App.SelfChannelID);
             }
             
 

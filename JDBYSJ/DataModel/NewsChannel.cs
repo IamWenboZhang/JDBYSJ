@@ -33,7 +33,18 @@ namespace JDBYSJ.Data
         private static NewsChannelsDataSource _nesChannelsDataSource = new NewsChannelsDataSource();
 
 
-
+        public async static Task<string> GetChannelNameByChannelId(string channelId)
+        {
+            if(channelId.Length>0)
+            {
+                if(await _nesChannelsDataSource.GetNewsChannelsData())
+                {
+                    var channelmatches = _nesChannelsDataSource.NewsChannelsResBody.SelectMany(channel => channel.channelList).Where((item) => item.channelId.Equals(channelId));
+                    if (channelmatches.Count() == 1) return channelmatches.First().name;
+                }              
+            }
+            return "";
+        }
 
         //函数：刷新频道列表
         public static async Task<ShowAPI_res_body_NewsChannel> RefreshNewsChannels()

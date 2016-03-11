@@ -37,6 +37,9 @@ namespace JDBYSJ
         private int TechnologyCurrentPage = 0;
         private int SelfCurrentPage = 0;
 
+
+       
+
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
@@ -46,7 +49,6 @@ namespace JDBYSJ
             this.InitializeComponent();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -91,7 +93,7 @@ namespace JDBYSJ
                 {
                     var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
                     await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
+                    {                        
                         this.Panel_Load.Opacity = 1;
                         this.ProgressRing_Load.IsActive = true;
                     });
@@ -138,24 +140,26 @@ namespace JDBYSJ
         {
             if (App.HaveNetWork)
             {
-                if (App.IsFirstLoadPivotPage)
+                if (App.SelfChannelID.Length != 0)
                 {
-                    if (App.SelfChannelID.Length != 0)
-                    {
-                        var selfNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Self);
-                        this.defaultViewModel[SelfNewsName] = selfNews;
-                        SelfCurrentPage = Convert.ToInt32(selfNews.showapi_res_body.pagebean.currentPage);
-                        this.RefreshListView.FontSize = 20;
-                    }
-                    var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
-                    await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        this.Panel_Load.Opacity = 0;
-                        this.ProgressRing_Load.IsActive = false;
-                    });
-                    App.IsFirstLoadPivotPage = false;
+                    var selfNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Self);
+                    this.defaultViewModel[SelfNewsName] = selfNews;
+                    SelfCurrentPage = Convert.ToInt32(selfNews.showapi_res_body.pagebean.currentPage);
+                        
                 }
+                var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    this.Panel_Load.Opacity = 0;
+                    this.ProgressRing_Load.IsActive = false;
+                });
+                App.IsFirstLoadPivotPage = false;                
             }
+            var dispatcher1 = CoreApplication.MainView.CoreWindow.Dispatcher;
+            await dispatcher1.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                this.TextBlock_SelfChannelName.Text = App.SelfChannelName;             
+            });
         }
 
         /// <summary>

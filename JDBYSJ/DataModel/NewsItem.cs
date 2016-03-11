@@ -210,13 +210,34 @@ namespace JDBYSJ.Data
                     if (currentpage < Convert.ToInt32(ChannelNewses.showapi_res_body.pagebean.allPages))
                     {
                         string nextpage = (currentpage + 1).ToString();
-                        ShowNewsAPIURL selfNewsAPIUrl = new ShowNewsAPIURL("109-35",App.SelfChannelID, "", "", "1", "", nextpage);
-                        apiUrl = selfNewsAPIUrl.ToString();
-                        
+                        ShowNewsAPIURL searcNewsAPIUrl = new ShowNewsAPIURL("109-35","", "", "", "1", "", nextpage);
+                        apiUrl = searcNewsAPIUrl.ToString();
                         if (await _newsDataSource.GetNewsDataAsync(apiUrl, type))
                         {
                             var selfmatches = _newsDataSource.SelfNewsPges;
                             return selfmatches[Convert.ToInt32(nextpage) - 1];
+                        }
+                        else
+                        {
+                            return new ShowAPI_NewsClass();
+                        }
+                    }
+                    else
+                    {
+                        MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
+                        errormsgdlg.ShowAsync();
+                    }
+                    break;
+                case NewsChannelsType.Search:
+                    if (currentpage < Convert.ToInt32(ChannelNewses.showapi_res_body.pagebean.allPages))
+                    {
+                        string nextpage = (currentpage + 1).ToString();
+                        ShowNewsAPIURL searchNewsAPIUrl = new ShowNewsAPIURL("109-35", "", "", "", "1", SearchPage.MainWord, nextpage);
+                        apiUrl = searchNewsAPIUrl.ToString();
+                        if (await _newsDataSource.GetNewsDataAsync(apiUrl, type))
+                        {
+                            var serachmatches = _newsDataSource.SearchNewsPages;
+                            return serachmatches[Convert.ToInt32(nextpage) - 1];
                         }
                         else
                         {
@@ -310,13 +331,20 @@ namespace JDBYSJ.Data
                         return new ShowAPI_NewsClass();
                     }
                 case NewsChannelsType.Search:                    
-                    if(_newsDataSource.SearchNewsPages.Count ==0)
+                    if(_newsDataSource.SearchNewsPages.Count != 0)
                     {
-                        return new ShowAPI_NewsClass();
+                        _newsDataSource._searchresClass.Clear();
+                    }
+                    ShowNewsAPIURL searchNewsAPIUrl = new ShowNewsAPIURL("109-35", "", "", "", "1", SearchPage.MainWord, "1");
+                    apiUrl = searchNewsAPIUrl.ToString();
+                    if (await _newsDataSource.GetNewsDataAsync(apiUrl, type))
+                    {
+                        var searchmatches = _newsDataSource.SearchNewsPages;
+                        return searchmatches.First();
                     }
                     else
                     {
-                        return _newsDataSource.SearchNewsPages.First();
+                        return new ShowAPI_NewsClass();
                     }
             }
             //await _newsDataSource.GetNewsDataAsync(apiUrl, type);
@@ -387,16 +415,7 @@ namespace JDBYSJ.Data
                     break;
             }
             return new NewsItem();
-        }
-
-        private string RandomImgUrl()
-        {
-            Random imgRandom = new Random();
-            int index = imgRandom.Next(0,100);
-            int test = index % 4;
-            string result = "ms-appx:///Assets/default" + test.ToString() + ".jpg";
-            return result;
-        }
+        }     
 
         //获取新闻数据赋值给对应频道的集合
         private async Task<bool> GetNewsDataAsync(string apiUrl,NewsChannelsType type)
@@ -408,16 +427,20 @@ namespace JDBYSJ.Data
                 ShowAPI_NewsClass res = MrOwl_JasonSerializerClass.DataContractJasonSerializer<ShowAPI_NewsClass>(JsonText);
                 if (res.showapi_res_code == "0")
                 {
-                    for(int i = 0; i < res.showapi_res_body.pagebean.contentlist.Count;i++)
+                    for (int i = 0; i < res.showapi_res_body.pagebean.contentlist.Count; i++)
                     {
                         if (res.showapi_res_body.pagebean.contentlist[i].imageurls.Count == 0)
                         {
                             JsonImage img = new JsonImage();
-                            img.url = RandomImgUrl();
+                            img.url = "ms-appx:///Assets/zhuanshu150.png";
                             res.showapi_res_body.pagebean.contentlist[i].imageurls.Add(img);
                         }
-                    }
-                   
+                        if (res.showapi_res_body.pagebean.contentlist[i].html.Length == 0)
+                        {
+                            res.showapi_res_body.pagebean.contentlist.Remove(res.showapi_res_body.pagebean.contentlist[i]);
+                            i--;
+                        }
+                    }                  
                     switch (type)
                     {
                         case NewsChannelsType.Social:

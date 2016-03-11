@@ -35,7 +35,7 @@
             Margin="20,67.833,20,0" 
             Grid.Row="1" 
             VerticalAlignment="Top"
-            DataContext="{Binding Channel}" DropDownClosed="comboBox_Channel_DropDownClosed"                        
+            DataContext="{Binding Channel}"               
             >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
@@ -45,4 +45,10 @@
         </ComboBox>
         <TextBlock x:Name="textBlock" Margin="20,34.833,20,0" Grid.Row="1" TextWrapping="Wrap" Text="选择你感兴趣的频道" FontSize="20" VerticalAlignment="Top"/>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="btn_OK" Icon="Accept" Label="确定" Click="btn_OK_Click" />
+            <AppBarButton x:Name="btn_Cancel" Icon="Cancel" Label="取消" Click="btn_Cancel_Click"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

@@ -34,65 +34,7 @@
                 CommonNavigationTransitionInfo.IsStaggerElement="True"
                 DataContext="{Binding Social}"
                 >
-
-                <local:RefreshListView
-                    x:Name="RefreshListView"
-                    DataContext="{Binding Social}"
-                    ItemsSource="{Binding showapi_res_body.pagebean.contentlist}"
-                    IsItemClickEnabled="True"
-                    ItemClick="ItemView_ItemClick"                    
-                    >
-                    <local:RefreshListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,0,0,9.5" Height="157">
-                                <Image 
-                                    Source="{Binding imageurls[0].url}"
-                                    Margin="10,50,0,9"  
-                                    HorizontalAlignment="Left"
-                                    Width="100"
-                                    Height="100" 
-                                    Stretch="UniformToFill"/>
-                                <TextBlock
-                                    Text="{Binding title}"
-                                    TextWrapping="Wrap"
-                                    TextTrimming="WordEllipsis"
-                                    FontSize="25"
-                                    FontWeight="Bold"
-                                    Pivot.SlideInAnimationGroup="1"
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True"
-                                    Style="{ThemeResource ListViewItemTextBlockStyle}"
-                                    Margin="10,0,10,110"/>
-                                <TextBlock
-                                    Text="{Binding desc}"
-                                    TextWrapping="WrapWholeWords"
-                                    Pivot.SlideInAnimationGroup="2" 
-                                    CommonNavigationTransitionInfo.IsStaggerElement="True" 
-                                    Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                    TextTrimming="WordEllipsis"
-                                    Margin="145,40,10,15"/>
-                                <StackPanel Margin="145,135,10,5" Orientation="Horizontal">
-                                    <TextBlock
-                                        Text="{Binding pubDate}"
-                                        FontSize="12"
-                                        Foreground="White"                                        
-                                    />
-                                    <TextBlock
-                                        Text="来源："
-                                        FontSize="12"
-                                        Foreground="White" 
-                                        Margin="30,0,0,0"
-                                        />
-                                    <TextBlock
-                                        Text="{Binding source}"
-                                        FontSize="12"
-                                        Foreground="White"                                      
-                                    />
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </local:RefreshListView.ItemTemplate>
-                </local:RefreshListView>
-                <!--具有文字环绕的双线列表--><!--
+                <!--具有文字环绕的双线列表-->
                 <ListView
                     ItemsSource="{Binding showapi_res_body.pagebean.contentlist}"
                     IsItemClickEnabled="True"
@@ -147,7 +89,7 @@
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                </ListView>-->
+                </ListView>
             </PivotItem>
 
             <!--枢轴项二-->
@@ -307,7 +249,7 @@
                     <ListView.Header>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="当前频道：" FontSize="15"/>
-                            <TextBlock x:Name="TextBlock_SelfChannelName" Text="私人订阅" FontSize="15" Foreground="#FF0B6CF8"/>
+                            <TextBlock x:Name="TextBlock_SelfChannelName" Text="{Binding App.SelfChannelName}" FontSize="15" Foreground="#FF0B6CF8"/>
                         </StackPanel>
                         
                     </ListView.Header>
@@ -377,10 +319,10 @@
     <Page.BottomAppBar>
         <CommandBar>
             <!--<AppBarButton x:Uid="AddAppBarButton" x:Name="AddAppBarButton" Label="add" Icon="Add" Click="AddAppBarButton_Click" />-->
-            <AppBarButton x:Uid="RefreshAppBarButton" x:Name="RefreshAppBarButton" Label="刷新" Icon="Refresh" Click="RefreshAppBarButton_Click" />
+            <AppBarButton x:Uid="RefreshAppBarButton" x:Name="RefreshAppBarButton" Label="刷新列表" Icon="Refresh" Click="RefreshAppBarButton_Click" />
             <AppBarButton x:Uid="SearchAppBarButton" x:Name="SearchAppBarButton" Label="搜索" Icon="Find" Click="SearchAppBarButton_Click" />
             <AppBarButton x:Uid="SettingAppBarButton" x:Name="SettingAppBarButton" Label="设置" Icon="Setting" Click="SettingAppBarButton_Click" />
-            <AppBarButton x:Uid="AddAppBarButton" x:Name="AddAppBarButton" Label="加载" Icon="Add" Click="AddAppBarButton_Click"/>
+            <AppBarButton x:Uid="AddAppBarButton" x:Name="AddAppBarButton" Label="加载更多" Icon="Add" Click="AddAppBarButton_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
 </Page>

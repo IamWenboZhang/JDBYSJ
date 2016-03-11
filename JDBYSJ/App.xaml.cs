@@ -34,8 +34,24 @@ namespace JDBYSJ
         public static string YuleChannelID = "5572a108b3cdc86cf39001d5";                //“娱乐焦点”频道ID
         public static string SelfChannelID = "";                                        //“私人订阅”频道ID        
 
+        private static string _selfChannelName = "";
+
+        public static string SelfChannelName
+        {
+            get
+            {
+                return _selfChannelName;
+            }
+            set
+            {
+                _selfChannelName = value;
+            }
+        }
+
         public static bool IsFirstLoadPivotPage = true;                                       //判断是否是第一次进入PivotPage界面
         public static bool HaveNetWork { get { return MrOwl_JasonSerializerClass.CheckNetWork(); } }
+
+       
 
         private TransitionCollection transitions;
 
@@ -122,6 +138,10 @@ namespace JDBYSJ
                 {
                     MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
                     errormsgdlg.ShowAsync();
+                }
+                else
+                {
+                    SelfChannelName = await NewsChannelsDataSource.GetChannelNameByChannelId(SelfChannelID);
                 }
                 // 当导航堆栈尚未还原时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置

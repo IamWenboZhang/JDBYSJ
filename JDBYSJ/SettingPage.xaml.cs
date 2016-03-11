@@ -121,8 +121,9 @@ namespace JDBYSJ
         }
 
         #endregion
+     
 
-        private void comboBox_Channel_DropDownClosed(object sender, object e)
+        private void btn_OK_Click(object sender, RoutedEventArgs e)
         {
             if (App.HaveNetWork)
             {
@@ -130,19 +131,27 @@ namespace JDBYSJ
                 {
                     NewsChannel selectChannel = this.comboBox_Channel.SelectedItem as NewsChannel;
                     App.SelfChannelID = selectChannel.channelId;
-                    ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;//存储单一配置的句柄
-                                                                                                   //ApplicationDataCompositeValue composite = new ApplicationDataCompositeValue();//存储多项配置句柄
-                                                                                                   //StorageFolder localFolder = ApplicationData.Current.LocalFolder;//存储文件句柄
-                    localSettings.Values["SelfChannelID"] = selectChannel.channelId; ;//存储单一配置
-                                                                                      //composite["intVal"] = 1;
-                                                                                      //composite["strVal"] = "string";
-                                                                                      //localSettings.Values["exampleCompositeSetting"] = composite;//存储多项配置
+                    App.SelfChannelName = selectChannel.name;
+                    ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+                    localSettings.Values["SelfChannelID"] = selectChannel.channelId;
                 }
             }
             else
             {
                 MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
                 errormsgdlg.ShowAsync();
+            }
+            if (!Frame.Navigate(typeof(PivotPage)))
+            {
+                throw new Exception();
+            }
+        }
+
+        private void btn_Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(PivotPage)))
+            {
+                throw new Exception();
             }
         }
     }
