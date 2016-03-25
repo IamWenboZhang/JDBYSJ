@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="JDBYSJ.ItemPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:JDBYSJ"
+    xmlns:data="using:JDBYSJ.Data"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel.Item, RelativeSource={RelativeSource Self}}"
+    d:DataContext="{Binding Source={d:DesignData Type=data:NewsItem}}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <ContinuumNavigationTransitionInfo/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题面板 -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock x:Uid="Header" Text="MY APPLICATION" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock 
+                Text="{Binding title}"  
+                Margin="0,10,0,10" 
+                FontSize="25"
+                FontWeight="Normal"
+                TextWrapping="WrapWholeWords"
+                FontFamily="Microsoft YaHei"
+                Style="{StaticResource HeaderTextBlockStyle}"
+                 />
+        </StackPanel>
+
+        <!-- 
+            TODO: 应将内容放入以下网格
+                  以显示当前项的详细信息
+        -->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <WebView x:Name="DisplayWebView" Margin="0,0,0,0" DefaultBackgroundColor="{ThemeResource PhoneBackgroundColor}"/>
+        </Grid>
+
+    </Grid>
+</Page>
+

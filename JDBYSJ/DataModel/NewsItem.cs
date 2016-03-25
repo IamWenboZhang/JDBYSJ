@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Data.Json;
 using Windows.Storage;
 using Windows.UI.Popups;
@@ -127,8 +128,9 @@ namespace JDBYSJ.Data
             else
             {
                 var searchmatches = _newsDataSource.SearchNewsPages;
-                MessageDialog errormsgdlg = new MessageDialog(searchmatches[0].showapi_res_error, "错误信息！");
+                MessageDialog errormsgdlg = new MessageDialog("请检查本机时间是否准确以及网络是否畅通。", "错误！");
                 await errormsgdlg.ShowAsync();
+                errormsgdlg = null;
                 return new ShowAPI_NewsClass();
             }
         }
@@ -158,19 +160,24 @@ namespace JDBYSJ.Data
                     }
                     else
                     {
-                        MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
-                        errormsgdlg.ShowAsync();
+                        var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                        await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
+                            errormsgdlg.ShowAsync();
+                            errormsgdlg = null;
+                        });                                               
                     }
                     break;
-                case NewsChannelsType.Yule:
+                case NewsChannelsType.GuoJi:
                     if (currentpage < Convert.ToInt32(ChannelNewses.showapi_res_body.pagebean.allPages))
                     {
                         string nextpage = (currentpage + 1).ToString();
-                        ShowNewsAPIURL yuleNewsAPIUrl = new ShowNewsAPIURL("109-35",App.YuleChannelID, "", "", "1", "", nextpage);
+                        ShowNewsAPIURL yuleNewsAPIUrl = new ShowNewsAPIURL("109-35",App.GuoJiChannelID, "", "", "1", "", nextpage);
                         apiUrl = yuleNewsAPIUrl.ToString();                        
                         if (await _newsDataSource.GetNewsDataAsync(apiUrl, type))
                         {
-                            var yulematches = _newsDataSource.YuleNewsPages;
+                            var yulematches = _newsDataSource.GuojiNewsPages;
                             return yulematches[Convert.ToInt32(nextpage) - 1];
                         }
                         else
@@ -180,8 +187,13 @@ namespace JDBYSJ.Data
                     }
                     else
                     {
-                        MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
-                        errormsgdlg.ShowAsync();
+                        var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                        await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
+                            errormsgdlg.ShowAsync();
+                            errormsgdlg = null;
+                        });
                     }
                     break;
                 case NewsChannelsType.Technology:
@@ -202,8 +214,13 @@ namespace JDBYSJ.Data
                     }
                     else
                     {
-                        MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
-                        errormsgdlg.ShowAsync();
+                        var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                        await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
+                            errormsgdlg.ShowAsync();
+                            errormsgdlg = null;
+                        });
                     }
                     break;
                 case NewsChannelsType.Self:
@@ -224,8 +241,13 @@ namespace JDBYSJ.Data
                     }
                     else
                     {
-                        MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
-                        errormsgdlg.ShowAsync();
+                        var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                        await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
+                            errormsgdlg.ShowAsync();
+                            errormsgdlg = null;
+                        });
                     }
                     break;
                 case NewsChannelsType.Search:
@@ -246,8 +268,13 @@ namespace JDBYSJ.Data
                     }
                     else
                     {
-                        MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
-                        errormsgdlg.ShowAsync();
+                        var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                        await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            MessageDialog errormsgdlg = new MessageDialog("没有更多了！", "提示");
+                            errormsgdlg.ShowAsync();
+                            errormsgdlg = null;
+                        });
                     }
                     break;
             }
@@ -277,18 +304,18 @@ namespace JDBYSJ.Data
                     {
                         return new ShowAPI_NewsClass();
                     }
-                case NewsChannelsType.Yule:
-                    if (_newsDataSource._yuleresClass.Count != 0)
+                case NewsChannelsType.GuoJi:
+                    if (_newsDataSource._guojiresClass.Count != 0)
                     {
-                        _newsDataSource._yuleresClass.Clear();
+                        _newsDataSource._guojiresClass.Clear();
                     }
-                    ShowNewsAPIURL yuleNewsAPIUrl = new ShowNewsAPIURL("109-35",App.YuleChannelID, "", "", "1", "", "1");
-                    apiUrl = yuleNewsAPIUrl.ToString();                   
+                    ShowNewsAPIURL guojiNewsAPIUrl = new ShowNewsAPIURL("109-35",App.GuoJiChannelID, "", "", "1", "", "1");
+                    apiUrl = guojiNewsAPIUrl.ToString();                   
                    
                     if (await _newsDataSource.GetNewsDataAsync(apiUrl, type))
                     {
-                        var yulematches = _newsDataSource.YuleNewsPages;
-                        return yulematches.First();
+                        var guojimatches = _newsDataSource.GuojiNewsPages;
+                        return guojimatches.First();
                     }
                     else
                     {
@@ -330,25 +357,30 @@ namespace JDBYSJ.Data
                     {
                         return new ShowAPI_NewsClass();
                     }
-                case NewsChannelsType.Search:                    
-                    if(_newsDataSource.SearchNewsPages.Count != 0)
+                case NewsChannelsType.Search:
+                    if(SearchPage.MainWord.Length != 0)
                     {
-                        _newsDataSource._searchresClass.Clear();
-                    }
-                    ShowNewsAPIURL searchNewsAPIUrl = new ShowNewsAPIURL("109-35", "", "", "", "1", SearchPage.MainWord, "1");
-                    apiUrl = searchNewsAPIUrl.ToString();
-                    if (await _newsDataSource.GetNewsDataAsync(apiUrl, type))
-                    {
-                        var searchmatches = _newsDataSource.SearchNewsPages;
-                        return searchmatches.First();
+                        if (_newsDataSource.SearchNewsPages.Count != 0)
+                        {
+                            _newsDataSource._searchresClass.Clear();
+                        }
+                        ShowNewsAPIURL searchNewsAPIUrl = new ShowNewsAPIURL("109-35", "", "", "", "1", SearchPage.MainWord, "1");
+                        apiUrl = searchNewsAPIUrl.ToString();
+                        if (await _newsDataSource.GetNewsDataAsync(apiUrl, type))
+                        {
+                            var searchmatches = _newsDataSource.SearchNewsPages;
+                            return searchmatches.First();
+                        }
+                        else
+                        {
+                            return new ShowAPI_NewsClass();
+                        }
                     }
                     else
                     {
                         return new ShowAPI_NewsClass();
                     }
             }
-            //await _newsDataSource.GetNewsDataAsync(apiUrl, type);
-            //var defaultmatches = _newsDataSource.SocialNewsResClass;
             return new ShowAPI_NewsClass();
         }
 
@@ -365,10 +397,10 @@ namespace JDBYSJ.Data
         { get { return this._socialresClass; } }
 
         //娱乐焦点新闻的集合
-        private ObservableCollection<ShowAPI_NewsClass> _yuleresClass = new ObservableCollection<ShowAPI_NewsClass>();
+        private ObservableCollection<ShowAPI_NewsClass> _guojiresClass = new ObservableCollection<ShowAPI_NewsClass>();
 
-        public ObservableCollection<ShowAPI_NewsClass> YuleNewsPages
-        { get { return this._yuleresClass; } }
+        public ObservableCollection<ShowAPI_NewsClass> GuojiNewsPages
+        { get { return this._guojiresClass; } }
 
         //科技最新新闻的集合
         private ObservableCollection<ShowAPI_NewsClass> _technologyresClass = new ObservableCollection<ShowAPI_NewsClass>();
@@ -395,8 +427,8 @@ namespace JDBYSJ.Data
                     if (socialmatches.Count() != 0) return socialmatches.First();
                     break;
                 case "1":
-                    var yulematches = _newsDataSource.YuleNewsPages.SelectMany(yule => yule.showapi_res_body.pagebean.contentlist).Where((item) => item.link.Equals(link));
-                    if (yulematches.Count() != 0) return yulematches.First();
+                    var guojimatches = _newsDataSource.GuojiNewsPages.SelectMany(yule => yule.showapi_res_body.pagebean.contentlist).Where((item) => item.link.Equals(link));
+                    if (guojimatches.Count() != 0) return guojimatches.First();
                     break;
                 case "2":
                     var technologymatches = _newsDataSource.TechnologyNewsPages.SelectMany(tech => tech.showapi_res_body.pagebean.contentlist).Where((item) => item.link.Equals(link));
@@ -418,63 +450,73 @@ namespace JDBYSJ.Data
         }     
 
         //获取新闻数据赋值给对应频道的集合
-        private async Task<bool> GetNewsDataAsync(string apiUrl,NewsChannelsType type)
+        public async Task<bool> GetNewsDataAsync(string apiUrl,NewsChannelsType type)
         {
             bool isOK = false;
             if (MrOwl_JasonSerializerClass.CheckNetWork())
             {
                 string JsonText = await MrOwl_JasonSerializerClass.GetJsonText(apiUrl);
-                ShowAPI_NewsClass res = MrOwl_JasonSerializerClass.DataContractJasonSerializer<ShowAPI_NewsClass>(JsonText);
-                if (res.showapi_res_code == "0")
+                if(JsonText != null)
                 {
-                    for (int i = 0; i < res.showapi_res_body.pagebean.contentlist.Count; i++)
+                    ShowAPI_NewsClass res = MrOwl_JasonSerializerClass.DataContractJasonSerializer<ShowAPI_NewsClass>(JsonText);
+                    if (res.showapi_res_code == "0")
                     {
-                        if (res.showapi_res_body.pagebean.contentlist[i].imageurls.Count == 0)
+                        for (int i = 0; i < res.showapi_res_body.pagebean.contentlist.Count; i++)
                         {
-                            JsonImage img = new JsonImage();
-                            img.url = "ms-appx:///Assets/zhuanshu150.png";
-                            res.showapi_res_body.pagebean.contentlist[i].imageurls.Add(img);
+                            if (res.showapi_res_body.pagebean.contentlist[i].imageurls.Count == 0)
+                            {
+                                JsonImage img = new JsonImage();
+                                img.url = "ms-appx:///Assets/zhuanshu150.png";
+                                res.showapi_res_body.pagebean.contentlist[i].imageurls.Add(img);
+                            }
+                            if (res.showapi_res_body.pagebean.contentlist[i].html.Length == 0)
+                            {
+                                res.showapi_res_body.pagebean.contentlist.Remove(res.showapi_res_body.pagebean.contentlist[i]);
+                                i--;
+                            }
                         }
-                        if (res.showapi_res_body.pagebean.contentlist[i].html.Length == 0)
+                        switch (type)
                         {
-                            res.showapi_res_body.pagebean.contentlist.Remove(res.showapi_res_body.pagebean.contentlist[i]);
-                            i--;
+                            case NewsChannelsType.Social:
+                                this._socialresClass.Add(res);
+                                isOK = true;
+                                return isOK; ;
+                            case NewsChannelsType.GuoJi:
+                                this._guojiresClass.Add(res);
+                                isOK = true;
+                                return isOK; ;
+                            case NewsChannelsType.Technology:
+                                this._technologyresClass.Add(res);
+                                isOK = true;
+                                return isOK; ;
+                            case NewsChannelsType.Self:
+                                this._selfresClass.Add(res);
+                                isOK = true;
+                                return isOK; ;
+                            case NewsChannelsType.Search:
+                                this._searchresClass.Add(res);
+                                isOK = true;
+                                return isOK; ;
                         }
-                    }                  
-                    switch (type)
-                    {
-                        case NewsChannelsType.Social:
-                            this._socialresClass.Add(res);
-                            isOK = true;
-                            return isOK; ;
-                        case NewsChannelsType.Yule:
-                            this._yuleresClass.Add(res);
-                            isOK = true;
-                            return isOK; ;
-                        case NewsChannelsType.Technology:
-                            this._technologyresClass.Add(res);
-                            isOK = true;
-                            return isOK; ;
-                        case NewsChannelsType.Self:
-                            this._selfresClass.Add(res);
-                            isOK = true;
-                            return isOK; ;
-                        case NewsChannelsType.Search:
-                            this._searchresClass.Add(res);
-                            isOK = true;
-                            return isOK; ;
                     }
+               
                 }
                 else
                 {
-                    MessageDialog errormsgdlg = new MessageDialog(res.showapi_res_error, "错误！");
-                    errormsgdlg.ShowAsync();
+                    //MessageDialog errormsgdlg = new MessageDialog(res.showapi_res_error, "错误！");
+                    //await errormsgdlg.ShowAsync();
+                    //errormsgdlg = null;
                 }
             }
             else
             {
-                MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
-                errormsgdlg.ShowAsync();
+                var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "错误！");
+                    errormsgdlg.ShowAsync();
+                    errormsgdlg = null;
+                });
             }            
             return isOK;
         }

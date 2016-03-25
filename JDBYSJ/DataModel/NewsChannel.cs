@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Popups;
 
 namespace JDBYSJ.Data
@@ -59,7 +60,7 @@ namespace JDBYSJ.Data
 
 
         //函数：获取Json数据并实例化为类
-        private async Task<bool> GetNewsChannelsData()
+        public async Task<bool> GetNewsChannelsData()
         {
             ShowNewsChannelAPIURL channelurl = new ShowNewsChannelAPIURL();
             string apiUrl = channelurl.ToString();
@@ -76,8 +77,8 @@ namespace JDBYSJ.Data
                 this._channelsResBody.Add(res.showapi_res_body);
             }
             else
-            {
-                MessageDialog errormsgdlg = new MessageDialog(res.showapi_res_error, "错误！");
+            {               
+                MessageDialog errormsgdlg = new MessageDialog("请检查本机时间是否准确以及网络是否畅通。", "错误！");
                 await errormsgdlg.ShowAsync();
             }
             return isOK;

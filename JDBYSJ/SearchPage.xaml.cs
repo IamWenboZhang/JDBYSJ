@@ -29,8 +29,7 @@ namespace JDBYSJ
     {       
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-
-        private int SearchCurrentPage = 0;
+        private int SearchCurrentPage = 1;
         public static string MainWord = "";
 
         public SearchPage()
@@ -73,8 +72,22 @@ namespace JDBYSJ
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: 创建适用于问题域的合适数据模型以替换示例数据。
-            var searchNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Search);
-            this.defaultViewModel["SearchResult"] = searchNews;
+            try
+            {
+                var searchNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Search);
+                this.defaultViewModel["SearchResult"] = searchNews;
+                if (Convert.ToInt32(searchNews.showapi_res_body.pagebean.allNum) > 0)
+                {
+                    var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                    await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        this.TextBlock_ResultNumber.Text = searchNews.showapi_res_body.pagebean.allNum;
+                        this.StackPanel_Result.Opacity = 1;
+                    });
+                }
+            }
+            catch(Exception ex)
+            { }
         }
 
         /// <summary>
@@ -131,76 +144,96 @@ namespace JDBYSJ
 
         private async void Btn_Search_Click(object sender, RoutedEventArgs e)
         {
-            if (App.HaveNetWork)
+            try
             {
-                var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
-                try
+                if (App.HaveNetWork)
                 {
-                    await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        this.StackPanel_Result.Opacity = 0;
-                        this.Panel_Search.Opacity = 1;
-                        this.ProgressRing_Search.IsActive = true;
-                    });
-                    MainWord = this.TextBox_Search.Text.Trim();
-                    var searchNews = await NewsDataSource.SearchNews(MainWord);
-                    SearchCurrentPage = Convert.ToInt32(searchNews.showapi_res_body.pagebean.currentPage);
-                    if (searchNews.showapi_res_body.pagebean.allNum == "0")
-                    {
-                        MessageDialog none_msgdlg = new MessageDialog("未搜索到相关消息", "换个词试试吧~");
-                        none_msgdlg.ShowAsync();
-                    }
-                    else
+                    var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                    try
                     {
                         await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                         {
-                            this.TextBlock_ResultNumber.Text = searchNews.showapi_res_body.pagebean.allNum;
-                            this.StackPanel_Result.Opacity = 1;                                                     
+                            this.StackPanel_Result.Opacity = 0;
+                            this.Panel_Search.Opacity = 1;
+                            this.ProgressRing_Search.IsActive = true;
                         });
+                        MainWord = this.TextBox_Search.Text.Trim();
+                        var searchNews = await NewsDataSource.SearchNews(MainWord);
+                        SearchCurrentPage = Convert.ToInt32(searchNews.showapi_res_body.pagebean.currentPage);
+                        if (searchNews.showapi_res_body.pagebean.allNum == "0")
+                        {
+                            MessageDialog none_msgdlg = new MessageDialog("未搜索到相关消息", "换个词试试吧~");
+                            await none_msgdlg.ShowAsync();
+                        }
+                        else if (searchNews.showapi_res_code != "0")
+                        {
+                            MessageDialog errormsgdlg = new MessageDialog("请检查本机时间是否准确以及网络是否畅通。", "错误！");
+                            await errormsgdlg.ShowAsync();
+                        }
+                        else
+                        {
+                            await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                            {
+                                this.TextBlock_ResultNumber.Text = searchNews.showapi_res_body.pagebean.allNum;
+                                this.StackPanel_Result.Opacity = 1;
+                            });
+                        }
+                        this.defaultViewModel["SearchResult"] = searchNews;
                     }
-                    this.defaultViewModel["SearchResult"] = searchNews;
+                    catch (Exception ex)
+                    {
+                    }
+                    await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        this.Panel_Search.Opacity = 0;
+                        this.ProgressRing_Search.IsActive = false;
+                    });
                 }
-                catch (Exception ex)
-                {                    
+                else
+                {
+                    MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
+                    errormsgdlg.ShowAsync();
                 }
-                await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {                    
-                    this.Panel_Search.Opacity = 0;
-                    this.ProgressRing_Search.IsActive = false;
-                });
             }
-            else
-            {
-                MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
-                errormsgdlg.ShowAsync();
-            }
+            catch (Exception ex)
+            { }
         }
 
         private async void btn_Refresh_Click(object sender, RoutedEventArgs e)
         {
-            var searchNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Search);
-            this.defaultViewModel["SearchResult"] = searchNews;
-            SearchCurrentPage = Convert.ToInt32(searchNews.showapi_res_body.pagebean.currentPage);
-            var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
-            await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            try
             {
-                this.TextBlock_ResultNumber.Text = searchNews.showapi_res_body.pagebean.allNum;
-                this.StackPanel_Result.Opacity = 1;
-            });
+                var searchNews = await NewsDataSource.GetFirstPageShowAPI_NewsClassAsync(NewsChannelsType.Search);
+                this.defaultViewModel["SearchResult"] = searchNews;
+                SearchCurrentPage = Convert.ToInt32(searchNews.showapi_res_body.pagebean.currentPage);
+                var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+                await dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    this.TextBlock_ResultNumber.Text = searchNews.showapi_res_body.pagebean.allNum;
+                    this.StackPanel_Result.Opacity = 1;
+                });
+            }
+            catch(Exception ex)
+            { }
         }
 
         private async void btn_Add_Click(object sender, RoutedEventArgs e)
         {
-            ShowAPI_NewsClass searchNews = this.defaultViewModel["SearchResult"] as ShowAPI_NewsClass;
-            var addSearchNews = await NewsDataSource.GetNextPage(searchNews, NewsChannelsType.Search, SearchCurrentPage);
-            if (addSearchNews.showapi_res_body.pagebean.currentPage != "-1")
+            try
             {
-                SearchCurrentPage = Convert.ToInt32(addSearchNews.showapi_res_body.pagebean.currentPage);
-                for (int i = 0; i < addSearchNews.showapi_res_body.pagebean.contentlist.Count; i++)
+                ShowAPI_NewsClass searchNews = this.defaultViewModel["SearchResult"] as ShowAPI_NewsClass;
+                var addSearchNews = await NewsDataSource.GetNextPage(searchNews, NewsChannelsType.Search, SearchCurrentPage);
+                if (addSearchNews.showapi_res_body.pagebean.currentPage != "-1")
                 {
-                    searchNews.showapi_res_body.pagebean.contentlist.Add(addSearchNews.showapi_res_body.pagebean.contentlist[i]);
+                    SearchCurrentPage = Convert.ToInt32(addSearchNews.showapi_res_body.pagebean.currentPage);
+                    for (int i = 0; i < addSearchNews.showapi_res_body.pagebean.contentlist.Count; i++)
+                    {
+                        searchNews.showapi_res_body.pagebean.contentlist.Add(addSearchNews.showapi_res_body.pagebean.contentlist[i]);
+                    }
                 }
             }
+            catch(Exception ex)
+            { }
         }
     }
 }

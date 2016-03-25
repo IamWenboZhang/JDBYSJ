@@ -23,7 +23,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace JDBYSJ
 {
-    public enum NewsChannelsType { Social, Yule, Technology, Self,Search };
+    public enum NewsChannelsType { Social, GuoJi, Technology, Self,Search };
     /// <summary>
     /// 提供特定于应用程序的行为，以补充默认的应用程序类。
     /// </summary>
@@ -31,12 +31,12 @@ namespace JDBYSJ
     {
         public static string SoicalChannelID = "5572a10bb3cdc86cf39001f8";              //“社会最新”频道ID
         public static string TechnologyChannelID = "5572a10ab3cdc86cf39001f4";          //“科技最新”频道ID
-        public static string YuleChannelID = "5572a108b3cdc86cf39001d5";                //“娱乐焦点”频道ID
+        public static string GuoJiChannelID = "5572a109b3cdc86cf39001dd";                //“国际焦点”频道ID
         public static string SelfChannelID = "";                                        //“私人订阅”频道ID        
 
-        private static string _selfChannelName = "";
+        private static string _selfChannelName = "";                                    //"私人订阅"频道名称
 
-        public static string SelfChannelName
+        public static string SelfChannelName                                            //"私人订阅"频道名称
         {
             get
             {
@@ -134,15 +134,6 @@ namespace JDBYSJ
 
 
                 ApplicationData_MrOwl.ReadLocalSetting();
-                if(!HaveNetWork)
-                {
-                    MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
-                    errormsgdlg.ShowAsync();
-                }
-                else
-                {
-                    SelfChannelName = await NewsChannelsDataSource.GetChannelNameByChannelId(SelfChannelID);
-                }
                 // 当导航堆栈尚未还原时，导航到第一页，
                 // 并通过将所需信息作为导航参数传入来配置
                 // 新页面。

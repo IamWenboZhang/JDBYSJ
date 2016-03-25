@@ -21,35 +21,56 @@
     <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\JDBYSJ.exe">
       <PackagePath>JDBYSJ.exe</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Logo.scale-240.png">
-      <PackagePath>Assets\Logo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\chatuzhuanshu.png">
+      <PackagePath>Assets\chatuzhuanshu.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\SmallLogo.scale-240.png">
-      <PackagePath>Assets\SmallLogo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
     <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\SplashScreen.scale-240.png">
       <PackagePath>Assets\SplashScreen.scale-240.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Square71x71Logo.scale-240.png">
-      <PackagePath>Assets\Square71x71Logo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Square71x71Logo.scale-100.png">
+      <PackagePath>Assets\Square71x71Logo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\StoreLogo.scale-240.png">
-      <PackagePath>Assets\StoreLogo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\WideLogo.scale-240.png">
-      <PackagePath>Assets\WideLogo.scale-240.png</PackagePath>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu.png">
+      <PackagePath>Assets\zhuanshu.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu150.png">
+      <PackagePath>Assets\zhuanshu150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu24.scale-100.png">
+      <PackagePath>Assets\zhuanshu24.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu44.png">
+      <PackagePath>Assets\zhuanshu44.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu50.png">
+      <PackagePath>Assets\zhuanshu50.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu71.png">
+      <PackagePath>Assets\zhuanshu71.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\起始页.png">
+      <PackagePath>Assets\起始页.png</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Common\ReadMe.txt">
       <PackagePath>Common\ReadMe.txt</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\DataModel\SampleData.json">
-      <PackagePath>DataModel\SampleData.json</PackagePath>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\DataModel\TestData.json">
+      <PackagePath>DataModel\TestData.json</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\JDBYSJ.xr.xml">
       <PackagePath>JDBYSJ.xr.xml</PackagePath>
@@ -63,8 +84,14 @@
     <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\PivotPage.xbf">
       <PackagePath>PivotPage.xbf</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\RefreshListView.xbf">
+      <PackagePath>RefreshListView.xbf</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\SearchPage.xbf">
       <PackagePath>SearchPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\SettingPage.xbf">
+      <PackagePath>SettingPage.xbf</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>

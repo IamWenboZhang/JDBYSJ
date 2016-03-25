@@ -7,11 +7,11 @@
 
   有关程序包清单文件的详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=241727
  -->
-  <Identity Name="65073fdf-630e-4f95-885d-14da0f4f6239" Publisher="CN=Mr.Owl" Version="1.0.0.0" ProcessorArchitecture="neutral" />
-  <mp:PhoneIdentity PhoneProductId="65073fdf-630e-4f95-885d-14da0f4f6239" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="52988Mr.Wenbo.610402C3479FD" Publisher="CN=B5539F00-4CB8-4915-B43D-C9757A9766E3" Version="1.1.0.0" ProcessorArchitecture="neutral" />
+  <mp:PhoneIdentity PhoneProductId="168c1613-2d03-49f4-8607-d87c0fb415d0" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>JDBYSJ</DisplayName>
-    <PublisherDisplayName>Mr.Owl</PublisherDisplayName>
+    <DisplayName>专属新闻</DisplayName>
+    <PublisherDisplayName>Mr.Wenbo</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -22,9 +22,14 @@
     <Resource Language="ZH-CN" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="JDBYSJ.exe" EntryPoint="JDBYSJ.App">
-      <m3:VisualElements DisplayName="JDBYSJ" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="JDBYSJ" ForegroundText="light" BackgroundColor="transparent">
-        <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png" />
+    <Application Id="App" Executable="JDBYSJ.exe" EntryPoint="专属新闻.App">
+      <m3:VisualElements DisplayName="专属新闻" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="JDBYSJ" ForegroundText="light" BackgroundColor="transparent">
+        <m3:LockScreen Notification="badge" BadgeLogo="Assets\zhuanshu24.png" />
+        <m3:DefaultTile Square71x71Logo="Assets\Square71x71Logo.png">
+          <m3:ShowNameOnTiles>
+            <m3:ShowOn Tile="square150x150Logo" />
+          </m3:ShowNameOnTiles>
+        </m3:DefaultTile>
         <m3:SplashScreen Image="Assets\SplashScreen.png" />
       </m3:VisualElements>
     </Application>

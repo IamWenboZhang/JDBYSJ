@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     DataContext="{Binding DefaultViewModel.Item, RelativeSource={RelativeSource Self}}"
-    d:DataContext="{Binding Groups[0].Items[0], Source={d:DesignData Source=/DataModel/SampleData.json, Type=data:SampleDataSource}}"
+    d:DataContext="{Binding Source={d:DesignData Type=data:NewsItem}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Transitions>
         <TransitionCollection>
@@ -34,7 +34,15 @@
         <!-- 标题面板 -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock x:Uid="Header" Text="MY APPLICATION" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock Text="{Binding Title}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,-6.5,0,26.5" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}" />
+            <TextBlock 
+                Text="{Binding title}"  
+                Margin="0,10,0,10" 
+                FontSize="25"
+                FontWeight="Normal"
+                TextWrapping="WrapWholeWords"
+                FontFamily="Microsoft YaHei"
+                Style="{StaticResource HeaderTextBlockStyle}"
+                 />
         </StackPanel>
 
         <!-- 
@@ -42,7 +50,7 @@
                   以显示当前项的详细信息
         -->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-            <WebView Margin="0,0,0,0"/>
+            <WebView x:Name="DisplayWebView" Margin="0,0,0,0" DefaultBackgroundColor="{ThemeResource PhoneBackgroundColor}"/>
         </Grid>
 
     </Grid>

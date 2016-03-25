@@ -94,13 +94,13 @@
 
             <!--枢轴项二-->
             <PivotItem 
-                x:Name="PivotItemYuLe"
-                x:Uid="PivotItemYuLe"
+                x:Name="PivotItemGuoJi"
+                x:Uid="PivotItemGuoJi"
                 Margin="19,14.5,0,0"
-                Header="娱乐新闻"
-                DataContext="{Binding Yule}"
-                d:DataContext="{Binding YuleNewsResClass, Source={d:DesignData Source=/DataModel/TestData.json, Type=data:ShowAPI_NewsClass}}"
-                Loaded="YulePivot_Loaded"
+                Header="国际新闻"
+                DataContext="{Binding GuoJi}"
+                d:DataContext="{Binding GuojiNewsPages, Source={d:DesignData Source=/DataModel/TestData.json, Type=data:ShowAPI_NewsClass}}"
+                Loaded="GuoJiPivot_Loaded"
                 >
                 <!--具有文字环绕的双线列表-->
                 <ListView

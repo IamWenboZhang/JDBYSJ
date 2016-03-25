@@ -1,1 +1,1 @@
-H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\JDBYSJ.csproj;neutral
+H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\专属新闻.csproj;neutral

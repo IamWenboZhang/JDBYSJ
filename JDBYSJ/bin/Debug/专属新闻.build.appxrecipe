@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-2ITECBR</Machine>
+    <WindowsUser>Mr.Owl</WindowsUser>
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+    <TargetOsVersion>6.3</TargetOsVersion>
+    <TargetOsDescription>Windows Phone 8.1</TargetOsDescription>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>168c1613-2d03-49f4-8607-d87c0fb415d0</PackageIdentityName>
+    <IntermediateOutputPath>H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\obj\Debug\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\JDBYSJ.exe">
+      <PackagePath>JDBYSJ.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\chatuzhuanshu.png">
+      <PackagePath>Assets\chatuzhuanshu.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\SplashScreen.scale-240.png">
+      <PackagePath>Assets\SplashScreen.scale-240.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\Square71x71Logo.scale-100.png">
+      <PackagePath>Assets\Square71x71Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu.png">
+      <PackagePath>Assets\zhuanshu.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu150.png">
+      <PackagePath>Assets\zhuanshu150.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu24.scale-100.png">
+      <PackagePath>Assets\zhuanshu24.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu44.png">
+      <PackagePath>Assets\zhuanshu44.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu50.png">
+      <PackagePath>Assets\zhuanshu50.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\zhuanshu71.png">
+      <PackagePath>Assets\zhuanshu71.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Assets\起始页.png">
+      <PackagePath>Assets\起始页.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\Common\ReadMe.txt">
+      <PackagePath>Common\ReadMe.txt</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\DataModel\TestData.json">
+      <PackagePath>DataModel\TestData.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\JDBYSJ.xr.xml">
+      <PackagePath>JDBYSJ.xr.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\ItemPage.xbf">
+      <PackagePath>ItemPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\PivotPage.xbf">
+      <PackagePath>PivotPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\RefreshListView.xbf">
+      <PackagePath>RefreshListView.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\SearchPage.xbf">
+      <PackagePath>SearchPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\SettingPage.xbf">
+      <PackagePath>SettingPage.xbf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="H:\文档项目\JDBYSJ\JDBYSJ\JDBYSJ\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

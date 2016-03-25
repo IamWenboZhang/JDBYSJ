@@ -141,7 +141,7 @@ namespace JDBYSJ
                 MessageDialog errormsgdlg = new MessageDialog("请检查你的网络连接", "警告");
                 errormsgdlg.ShowAsync();
             }
-            if (!Frame.Navigate(typeof(PivotPage)))
+            if (!Frame.Navigate(typeof(PivotPage),"RefreshSelf"))
             {
                 throw new Exception();
             }

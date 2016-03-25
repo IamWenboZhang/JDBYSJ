@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("JDBYSJ")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("专属新闻")]
+[assembly: AssemblyDescription("私人专属的新闻客户端~")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("JDBYSJ")]
+[assembly: AssemblyProduct("专属新闻")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

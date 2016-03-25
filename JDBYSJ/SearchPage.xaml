@@ -63,7 +63,25 @@
                                     CommonNavigationTransitionInfo.IsStaggerElement="True" 
                                     Style="{ThemeResource ListViewItemContentTextBlockStyle}"
                                     TextTrimming="WordEllipsis"
-                                    Margin="145,50,10,10"/>
+                                    Margin="145,40,10,15"/>
+                        <StackPanel Margin="145,140,10,5" Orientation="Horizontal">
+                            <TextBlock
+                                        Text="{Binding pubDate}"
+                                        FontSize="10"
+                                        Foreground="White"                                        
+                                    />
+                            <TextBlock
+                                        Text="来源："
+                                        FontSize="10"
+                                        Foreground="White" 
+                                        Margin="30,0,0,0"
+                                        />
+                            <TextBlock
+                                        Text="{Binding source}"
+                                        FontSize="10"
+                                        Foreground="White"                                      
+                                    />
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
